@@ -78,10 +78,21 @@ function checkAnswer(translatedAnswer, correctAnswer) {
     return true;
 };
 
+function shuffleArray(array) {
+    const shuffledArray = [...array];
+    for (let i = shuffledArray.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [shuffledArray[i], shuffledArray[j]] = [shuffledArray[j], shuffledArray[i]];
+    };
+  
+    return shuffledArray;
+}
+  
+
 function* startQuestionLoopGenerator(obj, chatId) {
     const method = languages[chatId] === 'Englesh'? 'keys' : 'values';
 
-    const keys = Object[method](obj);
+    const keys = shuffleArray(Object[method](obj));
 
     for (let i = 0; i < keys.length; i++) {
         yield keys[i];
@@ -104,7 +115,6 @@ bot.setMyCommands([
     { command: '/start_with_voice', description: 'start answering proccess with voice' },
     { command: '/info', description: 'Information about Bot' },
     { command: '/stop', description: 'Stop proccess' },
-    
 ]);
 
 bot.on('message', async (msg) => {
